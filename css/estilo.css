@@ -1,0 +1,53 @@
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  color: #000;
+  margin: 10px;
+}
+
+h2, h4 {
+  margin: 6px 0;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  page-break-inside: avoid;
+  font-size: 9px;
+}
+
+th, td {
+  border: 1px solid #000;
+  padding: 4px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 5px;
+}
+
+.assinatura {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.assinatura div {
+  width: 45%;
+  border-top: 1px solid #000;
+  text-align: center;
+  font-size: 9px;
+  padding-top: 5px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 8px;
+  color: #555;
+}
