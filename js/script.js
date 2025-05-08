@@ -1,7 +1,7 @@
 let notasHTML = '', cfopHTML = '';
 let totalNotas = 0, totalImpostos = 0;
 
-// 🔹 Função global para impressão (sem nova janela, mantendo layout)
+//Função global para impressão (sem nova janela, mantendo layout)
 function gerarImpressao() {
   const dataHora = new Date().toLocaleString();
   const conteudo = `
@@ -9,22 +9,45 @@ function gerarImpressao() {
     <head>
       <title>Relatório de Notas</title>
       <style>
+        @page {
+          margin: 1cm;
+        }
         body {
-          font-family:- Arial, sans-serif;
+          font-family: Arial, sans-serif;
           font-size: 10px;
           color: #000;
-          margin: 10px;
+          margin: 0;
+          padding: 0;
+        }
+        .header {
+          margin-bottom: 5px;
+        }
+        .logo {
+          width: 120px;
+          margin-bottom: 5px;
         }
         h2, h4 {
           margin: 6px 0;
           font-weight: bold;
         }
+        .section {
+          margin-bottom: 20px;
+        }
         table {
           width: 100%;
           border-collapse: collapse;
           margin-top: 10px;
-          page-break-inside: avoid;
+          page-break-inside: auto;
           font-size: 9px;
+        }
+        thead {
+          display: table-header-group;
+        }
+        tfoot {
+          display: table-footer-group;
+        }
+        tr {
+          page-break-after: auto;
         }
         th, td {
           border: 1px solid #000;
@@ -32,14 +55,11 @@ function gerarImpressao() {
           text-align: left;
           vertical-align: top;
         }
-        .logo {
-          width: 120px;
-          margin-bottom: 5px;
-        }
         .assinatura {
           margin-top: 30px;
           display: flex;
           justify-content: space-between;
+          page-break-inside: avoid;
         }
         .assinatura div {
           width: 45%;
@@ -53,48 +73,53 @@ function gerarImpressao() {
           margin-top: 20px;
           font-size: 8px;
           color: #555;
+          page-break-inside: avoid;
         }
       </style>
     </head>
     <body>
-      <div class="text-center">
+      <div class="header text-center">
         <img src="img/logo.png" class="logo" alt="Logo">
         <h2>Relatório de Notas Fiscais</h2>
         <p><em>Gerado em: ${dataHora}</em></p>
       </div>
 
-      <h4>Notas Fiscais</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Arquivo</th>
-            <th>Valor Total</th>
-            <th>CFOP</th>
-            <th>ICMS</th>
-          </tr>
-        </thead>
-        <tbody>${notasHTML}</tbody>
-        <tfoot>
-          <tr>
-            <td><strong>Total Geral</strong></td>
-            <td><strong>R$ ${totalNotas.toFixed(2)}</strong></td>
-            <td>-</td>
-            <td><strong>R$ ${totalImpostos.toFixed(2)}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
+      <div class="section">
+        <h4>Notas Fiscais</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Arquivo</th>
+              <th>Valor Total</th>
+              <th>CFOP</th>
+              <th>ICMS</th>
+            </tr>
+          </thead>
+          <tbody>${notasHTML}</tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Total Geral</strong></td>
+              <td><strong>R$ ${totalNotas.toFixed(2)}</strong></td>
+              <td>-</td>
+              <td><strong>R$ ${totalImpostos.toFixed(2)}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
 
-      <h4>Totais por CFOP</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>CFOP</th>
-            <th>Total de Notas</th>
-            <th>Total de ICMS</th>
-          </tr>
-        </thead>
-        <tbody>${cfopHTML}</tbody>
-      </table>
+      <div class="section">
+        <h4>Totais por CFOP</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>CFOP</th>
+              <th>Total de Notas</th>
+              <th>Total de ICMS</th>
+            </tr>
+          </thead>
+          <tbody>${cfopHTML}</tbody>
+        </table>
+      </div>
 
       <div class="assinatura">
         <div>Assinatura do Responsável</div>
