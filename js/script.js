@@ -89,19 +89,23 @@ function gerarImpressao() {
         <table>
           <thead>
             <tr>
-              <th>Arquivo</th>
-              <th>Valor Total</th>
-              <th>CFOP</th>
-              <th>ICMS</th>
+              <th>Nº NOTA</th>
+              <th>EMISSÃO</th>
+              <th>NOME CLIENTE</th>
+              <th>CPF/CNPJ</th>
+              <th>VL. TOTAL</th>
+              <th>VL. ICMS</th>
+              <th>NAT OP</th>
+              <th>SITUAÇÃO</th>
             </tr>
           </thead>
           <tbody>${notasHTML}</tbody>
           <tfoot>
             <tr>
-              <td><strong>Total Geral</strong></td>
+              <td colspan="4"><strong>Total Geral</strong></td>
               <td><strong>R$ ${totalNotas.toFixed(2)}</strong></td>
-              <td>-</td>
               <td><strong>R$ ${totalImpostos.toFixed(2)}</strong></td>
+              <td colspan="2">-</td>
             </tr>
           </tfoot>
         </table>
@@ -181,16 +185,26 @@ document.addEventListener('DOMContentLoaded', function () {
         const valorTotal = parseFloat(xml.querySelector('ICMSTot > vNF')?.textContent || '0.00');
         const cfop = xml.querySelector('det > prod > CFOP')?.textContent || '';
         const icms = parseFloat(xml.querySelector('ICMSTot > vICMS')?.textContent || '0.00');
+        const numeroNota = xml.querySelector('ide > nNF')?.textContent || '';
+        const dataEmissao = xml.querySelector('ide > dhEmi')?.textContent || '';
+        const nomeCliente = xml.querySelector('dest > xNome')?.textContent || 'Consumidor';
+        const cpfCnpj = xml.querySelector('dest > CNPJ')?.textContent || xml.querySelector('dest > CPF')?.textContent || 'Sem CPF';
+        const natOp = xml.querySelector('ide > natOp')?.textContent || '';
+        const situacao = xml.querySelector('ide > tpNF')?.textContent === '0' ? 'Entrada' : 'Saída';
 
         totalNotas += valorTotal;
         totalImpostos += icms;
 
         const linhaNota = `
           <tr>
-            <td>${arquivo.name}</td>
+            <td>${numeroNota}</td>
+            <td>${new Date(dataEmissao).toLocaleDateString()}</td>
+            <td>${nomeCliente}</td>
+            <td>${cpfCnpj}</td>
             <td>R$ ${valorTotal.toFixed(2)}</td>
-            <td>${cfop}</td>
             <td>R$ ${icms.toFixed(2)}</td>
+            <td>${natOp}</td>
+            <td>${situacao}</td>
           </tr>`;
         tabelaNotas.innerHTML += linhaNota;
         notasHTML += linhaNota;
